@@ -3,5 +3,5 @@
 *.hst
 *.gif
 *.o
-./athena/bin/athena
+athena/bin/athena
 *.gcov
