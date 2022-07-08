@@ -2,3 +2,6 @@
 *.athdf.xdmf
 *.hst
 *.gif
+*.o
+./athena/bin/athena
+*.gcov
