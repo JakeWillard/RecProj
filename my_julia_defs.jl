@@ -57,8 +57,10 @@ function animate_magnetic_field(dat::SimData, path; framerate=30)
     dy = y[2] - y[1]
 
     fig = Figure()
-    ax1 = Axis(fig[1, 1])
-    ax2 = Axis(fig[2, 1])
+    ax1 = Axis(fig[1, 1:2], title="Magnetic Field", xlabel="X", ylabel="Y")
+    ax2 = Axis(fig[2, 1:2], title="Velocity", xlabel="X", ylabel="Y")
+    ax3 = Axis(fig[3, 1], title="Density", xlabel="X", ylabel="Y")
+    ax4 = Axis(fig[3, 2], title="Pressure", xlabel="X", ylabel="Y")
 
     record(fig, path, [1:dat.Nt...], framerate=framerate) do t
 
@@ -84,11 +86,18 @@ function animate_magnetic_field(dat::SimData, path; framerate=30)
             vy = Uy(i,j)
             Point2(vx, vy)
         end
+
         delete!(ax1)
         delete!(ax2)
-        ax1 = Axis(fig[1, 1])
-        ax2 = Axis(fig[2, 1])
+        delete!(ax3)
+        delete!(ax4)
+        ax1 = Axis(fig[1, 1:2], title="Magnetic Field", xlabel="X", ylabel="Y")
+        ax2 = Axis(fig[2, 1:2], title="Velocity", xlabel="X", ylabel="Y")
+        ax3 = Axis(fig[3, 1], title="Density", xlabel="X", ylabel="Y")
+        ax4 = Axis(fig[3, 2], title="Pressure", xlabel="X", ylabel="Y")
         streamplot!(ax1, b, x[1]..x[end], y[1]..y[end])
         streamplot!(ax2, v, x[1]..x[end], y[1]..y[end])
+        heatmap!(ax3, x, y, rho)
+        heatmap!(ax4, x, y, P)
     end
 end
