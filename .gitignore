@@ -2,6 +2,8 @@
 *.athdf.xdmf
 *.hst
 *.gif
+*.mp4
 *.o
 athena/bin/athena
 *.gcov
+athena/Makefile

@@ -3,7 +3,7 @@ problem   = Basic current sheet
 configure = -g --coord gr_user -b --prob current_sheet -hdf5 --hdf5_path "/opt/cray/pe/hdf5/1.12.1.1/gnu/8.2"
 
 <job>
-problem_id   = bigger_sigma   # problem ID: basename of output filenames
+problem_id   = output   # problem ID: basename of output filenames
 
 <output1>
 file_type  = hst       # History data dump
@@ -56,7 +56,7 @@ gamma      = 1.666666667     # gamma = C_p/C_v
 m = 0.0
 a = 0.0
 alpha = 1.0
-K = 0.0
+K = 1.0
 h = 1.0
 
 <problem>
