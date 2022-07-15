@@ -29,7 +29,10 @@ Select data folder.
 """
 
 # ╔═╡ 4a43b442-6f5f-4ede-9fd1-270cdf6f948f
-@bind datafolder MultiSelect(glob("./data/*", "."))
+begin
+	foldernames = glob("./data/*", ".")
+	@bind datafolder MultiSelect(foldernames, default=[foldernames[1]])
+end
 
 # ╔═╡ 896820e6-c12d-4ed0-9b65-1eb6073e0784
 md"B range: ($(@bind Bmin NumberField(0:0.1:50, default=0)) , $(@bind Bmax NumberField(0:0.1:50, default=1)))"
@@ -39,9 +42,6 @@ md"psi range: ($(@bind psimin NumberField(-50:0.1:50, default=-1)) , $(@bind psi
 
 # ╔═╡ c1348d2b-f9b0-45ed-a4f7-0f2d204259db
 md"U range: ($(@bind Umin NumberField(0:0.1:50, default=0)) , $(@bind Umax NumberField(0:0.1:50, default=1)))"
-
-# ╔═╡ 30588079-3df6-4b97-87b8-d4080382c013
-md"phi range: ($(@bind phimin NumberField(-50:0.1:50, default=-1)) , $(@bind phimax NumberField(-50:0.1:50, default=1)))"
 
 # ╔═╡ bb195c6f-a148-4f2a-ab5a-e6818d5727b3
 md"Ux range: ($(@bind Uxmin NumberField(-50:0.1:50, default=-1)) , $(@bind Uxmax NumberField(-50:0.1:50, default=1)))"
@@ -111,7 +111,7 @@ end
 data = SimData(datafolder[1]);
 
 # ╔═╡ 446d4cca-15f5-43b2-bfa5-0fd227afe462
-md"Change time: $(@bind t Slider(1:data.Nt))"
+md"Select timestep: $(@bind t NumberField(1:data.Nt, default=1)) / $(data.Nt)"
 
 # ╔═╡ 3722b5c9-d0a0-4294-95b2-74fec1306ac9
 begin
@@ -224,15 +224,6 @@ begin
 	xlabel!(c_psi, "X")
 	ylabel!(c_psi, "Y")
 	title!(c_psi, "Fieldlines (timestep: $t)")
-end
-
-# ╔═╡ 6e8f008f-566f-4b3e-b79f-91dfe92ed827
-begin 
-	phi = stream_function(data.Ux, data.Uy);
-	c_phi = contour(data.xvals, data.yvals, transpose(phi[:,:,t]), clims=(phimin, phimax), color=:black)
-	xlabel!(c_phi, "X")
-	ylabel!(c_phi, "Y")
-	title!(c_phi, "Flowlines (timestep: $t)")
 end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
@@ -1275,8 +1266,8 @@ version = "0.9.1+5"
 # ╔═╡ Cell order:
 # ╟─d98a0e80-03f2-11ed-2451-59f88d66f26e
 # ╟─2c5e14f0-c648-4cb7-878b-f73faf6d4b4a
-# ╟─4a43b442-6f5f-4ede-9fd1-270cdf6f948f
-# ╟─4ad87485-a4ea-44dd-b668-2e0b423d041d
+# ╠═4a43b442-6f5f-4ede-9fd1-270cdf6f948f
+# ╠═4ad87485-a4ea-44dd-b668-2e0b423d041d
 # ╟─446d4cca-15f5-43b2-bfa5-0fd227afe462
 # ╟─3722b5c9-d0a0-4294-95b2-74fec1306ac9
 # ╟─896820e6-c12d-4ed0-9b65-1eb6073e0784
@@ -1284,8 +1275,6 @@ version = "0.9.1+5"
 # ╟─d503f2a7-6c3b-4093-a901-67d42aa7c97f
 # ╟─8989c6e5-d36b-4816-b2e3-3ae0fc6e94f6
 # ╟─c1348d2b-f9b0-45ed-a4f7-0f2d204259db
-# ╟─6e8f008f-566f-4b3e-b79f-91dfe92ed827
-# ╟─30588079-3df6-4b97-87b8-d4080382c013
 # ╟─f53bc2f9-07cf-4d9e-af27-af3c9fbf9690
 # ╟─bb195c6f-a148-4f2a-ab5a-e6818d5727b3
 # ╟─1647f881-a274-493f-9fae-0a40a54066a2
