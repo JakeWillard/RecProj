@@ -31,19 +31,29 @@ Select data folder.
 # ╔═╡ 4a43b442-6f5f-4ede-9fd1-270cdf6f948f
 @bind datafolder MultiSelect(glob("./data/*", "."))
 
-# ╔═╡ 43d2208d-d6bf-4b98-8ef2-5c5217fda3cc
-md"""
-B range: ($(@bind Bmin NumberField(0:50, default=0)) , $(@bind Bmax NumberField(0:50, default=1)))
+# ╔═╡ 896820e6-c12d-4ed0-9b65-1eb6073e0784
+md"B range: ($(@bind Bmin NumberField(0:0.1:50, default=0)) , $(@bind Bmax NumberField(0:0.1:50, default=1)))"
 
-speed range: ($(@bind Umin NumberField(0:50, default=0)) , $(@bind Umax NumberField(0:50, default=1)))
+# ╔═╡ d503f2a7-6c3b-4093-a901-67d42aa7c97f
+md"psi range: ($(@bind psimin NumberField(-50:0.1:50, default=-1)) , $(@bind psimax NumberField(-50:0.1:50, default=1)))"
 
-velocity range: ($(@bind Vmin NumberField(-50:50, default=-1)) , $(@bind Vmax NumberField(-50:50, default=1)))
+# ╔═╡ c1348d2b-f9b0-45ed-a4f7-0f2d204259db
+md"U range: ($(@bind Umin NumberField(0:0.1:50, default=0)) , $(@bind Umax NumberField(0:0.1:50, default=1)))"
 
-psi range: ($(@bind psimin NumberField(-50:50, default=-1)) , $(@bind psimax NumberField(-50:50, default=1)))
+# ╔═╡ 30588079-3df6-4b97-87b8-d4080382c013
+md"phi range: ($(@bind phimin NumberField(-50:0.1:50, default=-1)) , $(@bind phimax NumberField(-50:0.1:50, default=1)))"
 
-phi range: ($(@bind phimin NumberField(-50:50, default=-1)) , $(@bind phimax NumberField(-50:50, default=1)))
+# ╔═╡ bb195c6f-a148-4f2a-ab5a-e6818d5727b3
+md"Ux range: ($(@bind Uxmin NumberField(-50:0.1:50, default=-1)) , $(@bind Uxmax NumberField(-50:0.1:50, default=1)))"
 
-"""
+# ╔═╡ 7424dc32-0a51-4718-8dd6-583b1fc80c67
+md"Uy range: ($(@bind Uymin NumberField(-50:0.1:50, default=-1)) , $(@bind Uymax NumberField(-50:0.1:50, default=1)))"
+
+# ╔═╡ 7a2ec0b2-07a8-46f5-acaf-9eeb54efe57b
+md"density range: ($(@bind rhomin NumberField(0:0.01:50, default=0)) , $(@bind rhomax NumberField(0:0.01:50, default=1))"
+
+# ╔═╡ e0d85a23-fe32-40af-90e8-b716ced77235
+md"pressure range: ($(@bind Pmin NumberField(0:0.01:50, default=0)) , $(@bind Pmax NumberField(0:0.01:50, default=1))"
 
 # ╔═╡ 652257fd-cb4a-4a65-9c10-2e6e59995234
 struct SimData
@@ -123,7 +133,7 @@ end
 
 # ╔═╡ f53bc2f9-07cf-4d9e-af27-af3c9fbf9690
 begin
-	h_Ux = heatmap(data.xvals, data.yvals, transpose(data.Ux[:,:,t]), clims=(Vmin, Vmax))
+	h_Ux = heatmap(data.xvals, data.yvals, transpose(data.Ux[:,:,t]), clims=(Uxmin, Uxmax))
 	xlabel!(h_Ux, "X")
 	ylabel!(h_Ux, "Y")
 	title!(h_Ux, "Ux (timestep: $t)")
@@ -131,10 +141,26 @@ end
 
 # ╔═╡ 1647f881-a274-493f-9fae-0a40a54066a2
 begin
-	h_Uy = heatmap(data.xvals, data.yvals, transpose(data.Uy[:,:,t]), clims=(Vmin, Vmax))
+	h_Uy = heatmap(data.xvals, data.yvals, transpose(data.Uy[:,:,t]), clims=(Uymin, Uymax))
 	xlabel!(h_Uy, "X")
 	ylabel!(h_Uy, "Y")
 	title!(h_Uy, "Uy (timestep: $t)")
+end
+
+# ╔═╡ 5889468c-f565-4e9b-8965-c6729001fead
+begin
+	h_rho = heatmap(data.xvals, data.yvals, transpose(data.rho[:,:,t]))#, clims=(rhomin, rhomax))
+	xlabel!(h_rho, "X")
+	ylabel!(h_rho, "Y")
+	title!(h_rho, "Density (timestep: $t)")
+end
+
+# ╔═╡ fee2eba8-2709-46d5-9f44-b01bb98668f9
+begin
+	h_P = heatmap(data.xvals, data.yvals, transpose(data.P[:,:,t]), clims=(Pmin, Pmax))
+	xlabel!(h_P, "X")
+	ylabel!(h_P, "Y")
+	title!(h_P, "Pressure (timestep: $t)")
 end
 
 # ╔═╡ c30a99ae-85b7-4e1b-8141-6a1423feb810
@@ -1247,18 +1273,27 @@ version = "0.9.1+5"
 """
 
 # ╔═╡ Cell order:
-# ╠═d98a0e80-03f2-11ed-2451-59f88d66f26e
+# ╟─d98a0e80-03f2-11ed-2451-59f88d66f26e
 # ╟─2c5e14f0-c648-4cb7-878b-f73faf6d4b4a
 # ╟─4a43b442-6f5f-4ede-9fd1-270cdf6f948f
 # ╟─4ad87485-a4ea-44dd-b668-2e0b423d041d
 # ╟─446d4cca-15f5-43b2-bfa5-0fd227afe462
-# ╟─43d2208d-d6bf-4b98-8ef2-5c5217fda3cc
 # ╟─3722b5c9-d0a0-4294-95b2-74fec1306ac9
+# ╟─896820e6-c12d-4ed0-9b65-1eb6073e0784
 # ╟─78357291-5595-4592-a853-5e0bba5b9a43
+# ╟─d503f2a7-6c3b-4093-a901-67d42aa7c97f
 # ╟─8989c6e5-d36b-4816-b2e3-3ae0fc6e94f6
+# ╟─c1348d2b-f9b0-45ed-a4f7-0f2d204259db
 # ╟─6e8f008f-566f-4b3e-b79f-91dfe92ed827
+# ╟─30588079-3df6-4b97-87b8-d4080382c013
 # ╟─f53bc2f9-07cf-4d9e-af27-af3c9fbf9690
+# ╟─bb195c6f-a148-4f2a-ab5a-e6818d5727b3
 # ╟─1647f881-a274-493f-9fae-0a40a54066a2
+# ╟─7424dc32-0a51-4718-8dd6-583b1fc80c67
+# ╟─5889468c-f565-4e9b-8965-c6729001fead
+# ╟─7a2ec0b2-07a8-46f5-acaf-9eeb54efe57b
+# ╟─fee2eba8-2709-46d5-9f44-b01bb98668f9
+# ╟─e0d85a23-fe32-40af-90e8-b716ced77235
 # ╟─652257fd-cb4a-4a65-9c10-2e6e59995234
 # ╟─c30a99ae-85b7-4e1b-8141-6a1423feb810
 # ╟─b184a52f-e1c6-4627-a792-795ad4ef97a6
