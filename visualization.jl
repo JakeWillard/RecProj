@@ -48,3 +48,57 @@ struct SimData
     end
 
 end
+
+
+function stream_function(Vx::Matrix{Float32}, Vy::Matrix{Float32})
+
+    Nx, Ny = size(Vx)
+    kx = fftfreq(Nx)*Nx
+    ky = fftfreq(Ny)*Ny
+    kxm = hcat([kx for i=1:Ny]...)
+    kym = hcat([ones(Nx)*kyp for kyp in ky]...)
+    k2 = kxm .^2 + kym .^2
+    k2[1,1] = 1.0
+
+    Vxh = fft(Vx)
+    Vyh = fft(Vy)
+    Jh = im*(kxm .* Vyh - kym .* Vxh)
+    phih = - Jh ./ k2
+    phih[1,1] = 0.0
+
+    return real.(ifft(phih))
+end
+
+
+function stream_function(Vx::Array{Float32, 3}, Vy::Array{Float32, 3})
+
+    Nx, Ny, Nt = size(Vx)
+    kx = fftfreq(Nx)*Nx
+    ky = fftfreq(Ny)*Ny
+    kxm = hcat([kx for i=1:Ny]...)
+    kym = hcat([ones(Nx)*kyp for kyp in ky]...)
+    k2 = kxm .^2 + kym .^2
+    k2[1,1] = 1.0
+
+    phi = zeros((Nx, Ny, Nt))
+    phih = zeros(ComplexF32, (Nx, Ny))
+
+    # compute initial phi
+    FFT = plan_fft(Vx[:,:,1])
+    Jh = im*(kxm .* (FFT * Vy[:,:,1]) - kym .* (FFT * Vx[:,:,1]))
+    phih[:,:] = - Jh ./ k2
+    phih[1,1] = 0.0
+    IFFT = plan_ifft(phih)
+    phi[:,:,1] = real.(IFFT * phih)
+
+    for t=2:Nt
+
+        Jh = im*(kxm .* (FFT * Vy[:,:,t]) - kym .* (FFT * Vx[:,:,t]))
+        phih[:,:] = -Jh ./ k2
+        phih[1,1] = 0.0
+        phi[:,:,t] = real.(IFFT * phih)
+
+    end
+
+    return phi
+end

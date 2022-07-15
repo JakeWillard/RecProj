@@ -3,7 +3,7 @@ problem   = Basic current sheet
 configure = -g --coord gr_user -b --prob current_sheet -hdf5 --hdf5_path "/opt/cray/pe/hdf5/1.12.1.1/gnu/8.2"
 
 <job>
-problem_id   = output   # problem ID: basename of output filenames
+problem_id   = flat   # problem ID: basename of output filenames
 
 <output1>
 file_type  = hst       # History data dump
@@ -17,7 +17,7 @@ dt         = 0.01      # time increment between outputs
 <time>
 cfl_number = 0.4       # The Courant, Friedrichs, & Lewy (CFL) Number
 nlim       = -1        # cycle limit
-tlim       = 0.5       # time limit
+tlim       = 1.5      # time limit
 integrator = vl2       # time integration algorithm
 xorder     = 2         # order of spatial reconstruction
 ncycle_out = 1         # interval for stdout summary info
@@ -56,7 +56,7 @@ gamma      = 1.666666667     # gamma = C_p/C_v
 m = 0.0
 a = 0.0
 alpha = 1.0
-K = 1.0
+K = 0.0
 h = 1.0
 
 <problem>
