@@ -93,10 +93,23 @@ where $H_0$ is the initial value of $H$.
 md"""
 ## Toy spacetime for current sheet problem
 
-With periodic boundary conditions, we emulate the effect of a Schwarzschild-like spacetime with the following toy metric:
+The example of the Schwarzschild spacetime helps clarify what consequences the different components of the metric have on dynamics. From that, I propose a simplified toy metric:
 ```math 
-	ds^2 = -\alpha^2 dt^2 + dx^2 + \frac{1}{\alpha^2}dy^2
+	ds^2 = -\alpha^2 dt^2 + \frac{1}{\alpha^2}(dx^2 + dy^2)
 ```
+In this spacetime, $\alpha^2$ clearly plays the role of a kindo of generalized gravitational potential. The hamiltonain is:
+```math 
+H = \sqrt{\alpha^2 m^2 + p_x^2 + p_y^2}
+```
+and the equations of motion are 
+```math
+\dot{x}_i = \frac{p_i}{H_0}
+```
+```math
+\dot{p_i} = \frac{m^2}{2H_0}\partial_i \alpha^2
+```
+
+
 The coframe in these coordinates is
 ```math
 \sigma_x = dx, \sigma_y=dy/\alpha, \sigma_z=dz, \sigma_t=-\alpha dt
@@ -106,7 +119,7 @@ and we have the following Hodge dual relations for 2-forms:
 \star dt \wedge dx = \frac{1}{\alpha^2}dy \wedge dz
 ```
 ```math
-\star dt \wedge dy = dz \wedge dx
+\star dt \wedge dy = \frac{1}{\alpha^2}dz \wedge dx
 ```
 ```math
 \star dt \wedge dz = \frac{1}{\alpha^2}dx \wedge dy
@@ -115,12 +128,27 @@ and we have the following Hodge dual relations for 2-forms:
 \star dx \wedge dy = -\alpha^2 dt \wedge dz
 ```
 ```math
-\star dz \wedge dx = -dt \wedge dy
-```
-```math
 \star dy \wedge dz = -\alpha^2 dt \wedge dx
 ```
+```math
+\star dz \wedge dx = -\alpha^2 dt \wedge dy
+```
 
+"""
+
+# ╔═╡ 00000000-0000-0000-0000-000000000001
+PLUTO_PROJECT_TOML_CONTENTS = """
+[deps]
+"""
+
+# ╔═╡ 00000000-0000-0000-0000-000000000002
+PLUTO_MANIFEST_TOML_CONTENTS = """
+# This file is machine-generated - editing it directly is not advised
+
+julia_version = "1.7.3"
+manifest_format = "2.0"
+
+[deps]
 """
 
 # ╔═╡ Cell order:
@@ -129,3 +157,5 @@ and we have the following Hodge dual relations for 2-forms:
 # ╟─b7f5a0ca-cf2f-4089-a5c4-ab322d29c724
 # ╟─fdbb529c-f9aa-4dd2-8a09-dcbf05b8706f
 # ╟─eda855dc-631c-4a36-be63-8b821b501af3
+# ╟─00000000-0000-0000-0000-000000000001
+# ╟─00000000-0000-0000-0000-000000000002
