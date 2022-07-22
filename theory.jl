@@ -86,7 +86,7 @@ The equations of motion are
 ```math
 \dot{p_r} = -\frac{r_sm^2}{2H_0r^2} + (1 - \frac{3r_s}{2r})\frac{p_{\phi}^2}{H_0r^3}
 ```
-where $H_0$ is the initial value of $H$. 
+where $H_0$ is the initial value of $H$.
 """
 
 # ╔═╡ eda855dc-631c-4a36-be63-8b821b501af3
