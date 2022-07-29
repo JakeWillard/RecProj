@@ -93,40 +93,50 @@ void MyCoordinateSystem(Real x1, Real x2, Real x3, ParameterInput *pin,
     AthenaArray<Real> &dg_dx2, AthenaArray<Real> &dg_dx3) {
 
   // Extract inputs
-  Real alpha = pin->GetReal("coord", "alpha");
-  Real K = pin->GetReal("coord", "K");
-  Real h = pin->GetReal("coord", "h");
+  Real deltan = pin->GetReal("coord", "deltan");
+  Real Lg = pin->GetReal("coord", "Lg");
+
+
+  // Real alpha = pin->GetReal("coord", "alpha");
+  // Real K = pin->GetReal("coord", "K");
+  // Real h = pin->GetReal("coord", "h");
 
   // Intermediate
-  Real sx = std::sin(TWO_PI*x1);
-  Real sy = std::sin(TWO_PI*x2);
-  Real cx = std::cos(TWO_PI*x1);
-  Real cy = std::cos(TWO_PI*x2);
-  Real C = K*SQR(sx)*(3-K*SQR(sy)) + SQR(K*sx*sy) + 3*K*SQR(sy)-9;
+  // Real sx = std::sin(TWO_PI*x1);
+  // Real sy = std::sin(TWO_PI*x2);
+  // Real cx = std::cos(TWO_PI*x1);
+  // Real cy = std::cos(TWO_PI*x2);
+  // Real C = K*SQR(sx)*(3-K*SQR(sy)) + SQR(K*sx*sy) + 3*K*SQR(sy)-9;
+
+  Real sech = SQR(1 / std::cosh(std::sin(TWO_PI*x2)/Lg));
+  Real n = 1 + deltan * sech;
+  Real ninv = 1 / n;
+  Real dn = -2*TWO_PI*(n-1)*std::cos(TWO_PI*x2)*std::tanh(std::sin(TWO_PI*x2)/Lg)/Lg;
+  Real dninv = -dn / SQR(n);
 
   // Set covariant components
-  g(I00) = -SQR(alpha);
+  g(I00) = -ninv;
   g(I01) = 0.0;
   g(I02) = 0.0;
   g(I03) = 0.0;
-  g(I11) = 1 - K*SQR(sy)/3;
-  g(I12) = K*sx*sy/3;
+  g(I11) = n;
+  g(I12) = 0.0;
   g(I13) = 0.0;
-  g(I22) = 1 - K*SQR(sx)/3;
+  g(I22) = n;
   g(I23) = 0.0;
-  g(I33) = SQR(h);
+  g(I33) = n;
 
   // Set contravariant components
-  g_inv(I00) = -1.0/SQR(alpha);
+  g_inv(I00) = -n;
   g_inv(I01) = 0.0;
   g_inv(I02) = 0.0;
   g_inv(I03) = 0.0;
-  g_inv(I11) = (3*K*SQR(sx)-9)/C;
-  g_inv(I12) = 3*K*sx*sy/C;
+  g_inv(I11) = ninv;
+  g_inv(I12) = 0.0;
   g_inv(I13) = 0.0;
-  g_inv(I22) = (3*K*SQR(sy)-9)/C;
+  g_inv(I22) = ninv;
   g_inv(I23) = 0.0;
-  g_inv(I33) = 1.0/SQR(h);
+  g_inv(I33) = ninv;
 
   // Set x-derivatives of covariant components
   dg_dx1(I00) = 0.0;
@@ -134,23 +144,23 @@ void MyCoordinateSystem(Real x1, Real x2, Real x3, ParameterInput *pin,
   dg_dx1(I02) = 0.0;
   dg_dx1(I03) = 0.0;
   dg_dx1(I11) = 0.0;
-  dg_dx1(I12) = K*cx*sy/3;
+  dg_dx1(I12) = 0.0;
   dg_dx1(I13) = 0.0;
-  dg_dx1(I22) = -2*K*cx*sx/3;
+  dg_dx1(I22) = 0.0;
   dg_dx1(I23) = 0.0;
   dg_dx1(I33) = 0.0;
 
   // Set y-derivatives of covariant components
-  dg_dx2(I00) = 0.0;
+  dg_dx2(I00) = -dninv;
   dg_dx2(I01) = 0.0;
   dg_dx2(I02) = 0.0;
   dg_dx2(I03) = 0.0;
-  dg_dx2(I11) = -2*K*cy*sy/3;
-  dg_dx2(I12) = K*cy*sx/3;
+  dg_dx2(I11) = dn;
+  dg_dx2(I12) = 0.0;
   dg_dx2(I13) = 0.0;
-  dg_dx2(I22) = 0.0;
+  dg_dx2(I22) = dn;
   dg_dx2(I23) = 0.0;
-  dg_dx2(I33) = 0.0;
+  dg_dx2(I33) = dn;
 
   // Set z-derivatives of covariant components
   for (int n = 0; n < NMETRIC; ++n) {

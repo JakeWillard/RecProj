@@ -1,5 +1,5 @@
 <comment>
-problem   = Basic current sheet
+problem   = ref_test
 configure = -g --coord gr_user -b --prob current_sheet -hdf5 --hdf5_path "/opt/cray/pe/hdf5/1.12.1.1/gnu/8.2"
 
 <job>
@@ -17,7 +17,7 @@ dt         = 0.01      # time increment between outputs
 <time>
 cfl_number = 0.4       # The Courant, Friedrichs, & Lewy (CFL) Number
 nlim       = -1        # cycle limit
-tlim       = 0.5      # time limit
+tlim       = 1.0      # time limit
 integrator = vl2       # time integration algorithm
 xorder     = 2         # order of spatial reconstruction
 ncycle_out = 1         # interval for stdout summary info
@@ -55,9 +55,9 @@ gamma      = 1.666666667     # gamma = C_p/C_v
 <coord>
 m = 0.0
 a = 0.0
-alpha = 1.0
-K = 0.3
-h = 1.0
+deltan = 1.0
+Lg = 0.2
+
 
 <problem>
 sigma = 1.5
