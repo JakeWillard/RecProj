@@ -4,6 +4,7 @@
 *.gif
 *.mp4
 *.o
+.ipynb_checkpoints
 athena/bin/athena
 *.gcov
 athena/Makefile
