@@ -76,7 +76,7 @@ end
 
 
 # animate the out of plane vector potential
-function animate_flux(dat::SimData; yrange=(-0.5, 0.5))
+function animate_flux(dat::SimData; frames=-1, yrange=(-0.5, 0.5))
 
     psi = flux_function(dat)
     dy = dat.yvals[2] - dat.yvals[1]
@@ -90,7 +90,9 @@ function animate_flux(dat::SimData; yrange=(-0.5, 0.5))
     # psi_max = maximum(psi[:,jmin:jmax,:])
     # clims = (psi_min, psi_max)
 
-    anim = @animate for t=1:dat.Nt
+    Nf = (frames == -1) ? dat.Nt : frames
+
+    anim = @animate for t=1:Nf
         contour(dat.xvals, yvals, transpose(psi[:,jmin:jmax,t]), title="psi || timestep: $(t)", color=:black)
     end
 
@@ -100,10 +102,12 @@ end
 
 
 # animating the out of plane E field 
-function animate_E(dat::SimData; clims=(-1,1))
+function animate_E(dat::SimData; frames=-1, clims=(-1,1))
+
+    Nf = (frames == -1) ? dat.Nt : frames
 
     E = dat.Ux .* dat.By - dat.Uy .* dat.Bx
-    anim = @animate for t=1:dat.Nt
+    anim = @animate for t=1:Nf
         heatmap(dat.xvals, dat.yvals, transpose(E[:,:,t]), title="Ez || timestep: $(t)", clims=clims)
     end
 
@@ -112,5 +116,25 @@ function animate_E(dat::SimData; clims=(-1,1))
 end
 
 
+function animate_P(dat::SimData; frames=-1, clims=(0, 1))
+
+    Nf = (frames == -1) ? dat.Nt : frames
+
+    anim = @animate for t=1:Nf
+        heatmap(dat.xvals, dat.yvals, transpose(dat.P[:,:,t]), title="P || timestep: $(t)", clims=clims)
+    end
+
+    return anim 
+end 
 
 
+function animate_rho(dat::SimData; frames=-1, clims=(0, 1))
+
+    Nf = (frames == -1) ? dat.Nt : frames
+
+    anim = @animate for t=1:Nf
+        heatmap(dat.xvals, dat.yvals, transpose(dat.rho[:,:,t]), title="P || timestep: $(t)", clims=clims)
+    end
+
+    return anim 
+end 
